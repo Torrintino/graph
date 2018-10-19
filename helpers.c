@@ -6,7 +6,6 @@
 
 #include "helpers.h"
 
-
 /* read_line allocates memory as needed, 
    so the pointer has to be free'd by the caller ***/
 #define RL_BUFFER_SIZE 80
