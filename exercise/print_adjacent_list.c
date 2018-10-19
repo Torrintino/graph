@@ -1,3 +1,5 @@
+#include "../helpers.h"
+#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -8,7 +10,7 @@ typedef struct Node {
 
 typedef struct {
   Node* nodes;
-  unsigned long node_count;
+  unsigned long size;
 } Graph;
 
 Node* appendEdge(Node* n, unsigned long edge_id) {
@@ -31,7 +33,7 @@ Node* appendEdge(Node* n, unsigned long edge_id) {
 }
 
 void printGraph(Graph g) {
-  for(unsigned long i=0; i<g.node_count; i++) {
+  for(unsigned long i=0; i<g.size; i++) {
     Node* n = &g.nodes[i];
     printf("%lu", i);
     while(n->next != NULL) {
@@ -55,7 +57,7 @@ void destroyNodeList(Node* n) {
 }
 
 void destroyGraph(Graph g) {
-  for(int j=0; j<g.node_count; j++) {
+  for(int j=0; j<g.size; j++) {
     destroyNodeList(&g.nodes[j]);
   }
   free(g.nodes);
@@ -65,22 +67,27 @@ int main() {
   unsigned long test_cases, edge_count, node_id, edge_id;
   Graph g;
   
-  scanf("%lu", &test_cases);
+  test_cases = get_ul(1, &test_cases);
   for(int i=0; i<test_cases; i++) {
-    scanf("%lu %lu", &g.node_count, &edge_count);
-    g.nodes = malloc(g.node_count * sizeof(Node));
+    if(!get_ul(2, &g.size, &edge_count))
+      return 1;
+    g.nodes = malloc(g.size * sizeof(Node));
     if(g.nodes == NULL) {
       fprintf(stderr, "Allocation error\n");
       return 1;
     }
     
-    for(int j=0; j<g.node_count; j++) {
+    for(int j=0; j<g.size; j++) {
       g.nodes[j].id = j;
       g.nodes[j].next = NULL;
     }
 
     for(int j=0; j<edge_count; j++) {
-      scanf("%lu %lu", &node_id, &edge_id);
+      if(!get_ul(2, &node_id, &edge_id)) {
+	destroyGraph(g);
+	return 1;
+      }
+	
       if(appendEdge(&g.nodes[node_id], edge_id) == NULL ||
 	 appendEdge(&g.nodes[edge_id], node_id) == NULL) {
 	destroyGraph(g);
