@@ -41,28 +41,36 @@ Graph* addEdge(Graph* g, int src, int dest) {
   if(src >= g->size || dest >= g->size) {
     int old_size = g->size;
     g->size = src > dest ? (src + 1) : (dest + 1);
-
-    int* matrix_copy = g->matrix[0];
-    g->matrix = realloc(g->matrix, g->size * sizeof(int*));
+    
     if(g->matrix == NULL) {
-      for(int i=0; i<old_size; i++) {
-	free(matrix_copy);
-	matrix_copy++;
+      g->matrix = malloc(g->size * sizeof(int*));
+      if(g->matrix == NULL) {
+	free(g);
+	return NULL;
       }
-      free(g);
-      return NULL;
+    } else {
+      int** new = realloc(g->matrix, g->size * sizeof(int*));
+      if(new == NULL) {
+	for(int i=0; i<old_size; i++)
+	  free(g->matrix[i]);
+	free(g->matrix);
+	free(g);
+	return NULL;
+      }
+      g->matrix = new;
     }
-
+    
     // Add new cols to existing rows
     for(int i=0; i<old_size; i++) {
-      g->matrix[i] = realloc(g->matrix[i], g->size * sizeof(int*));
-      if(g->matrix[i] == NULL) {
+      int* new = realloc(g->matrix[i], g->size * sizeof(int*));
+      if(new == NULL) {
 	for(int j=old_size-1; j>=0; j--)
 	  free(g->matrix[j]);
 	free(g->matrix);
 	free(g);
 	return NULL;
       }
+      g->matrix[i] = new;
 
       // Initialize new cols
       for(int j = old_size; j < g->size; j++)
@@ -73,7 +81,7 @@ Graph* addEdge(Graph* g, int src, int dest) {
     for(int i=old_size; i<g->size; i++) {
       g->matrix[i] = malloc(g->size * sizeof(int*));
       if(g->matrix[i] == NULL) {
-	for(int j=g->size-1; j>=old_size; j--)
+	for(int j=0; j<i; j++)
 	  free(g->matrix[j]);
 	free(g->matrix);
 	free(g);

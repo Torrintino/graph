@@ -4,6 +4,15 @@ Hello,
 I created this repo for practice and because I need to work on graphs at the
 university on a regular basis.
 
+All files have in common, that all memory will be free'd, when a malloc or realloc call
+fails.
+
+## Tests
+
+To test that all memory will be free'd, a special mock for malloc and realloc has been
+created. To run the tests use `make test`, the usage of `valgrind` is recommended
+to ensure that there are no memory leakes.
+
 ## Helpers
 
 helpers.h/helper.c contain some definitions and functions that are frequently

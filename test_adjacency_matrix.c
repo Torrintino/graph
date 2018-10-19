@@ -27,15 +27,15 @@ int test_add_edges_extend_range() {
   printf("test_add_edges_extend_range():\n");
   Graph* g = initGraph(4);
  
-  addEdge(g, 5, 5);
+  g = addEdge(g, 5, 5);
   assert(isEdge(g, 5, 5));
   assert(g->size == 6);
   
-  addEdge(g, 5, 6);
+  g = addEdge(g, 5, 6);
   assert(isEdge(g, 5, 6));
   assert(g->size == 7);
   
-  addEdge(g, 7, 5);
+  g = addEdge(g, 7, 5);
   assert(isEdge(g, 7, 5));
   assert(g->size == 8);
   
@@ -96,9 +96,49 @@ int test_init_malloc_fails_row_5() {
   return 1;
 }
 
+int test_add_edge_malloc_fails_matrix() {
+  printf("test_add_edge_malloc_fails_matrix():\n");
+  MALLOC_CALLS = 1;
+  Graph* g = initGraph(0);
+  assert(addEdge(g, 0, 0) == NULL);
+  printf("Passed\n\n");
+  MALLOC_CALLS = -1;
+  return 1;
+}
+
+int test_add_edge_realloc_fails_matrix() {
+  printf("test_add_edge_malloc_fails_matrix():\n");
+  MALLOC_CALLS = 3;
+  Graph* g = initGraph(1);
+  assert(addEdge(g, 1, 1) == NULL);
+  printf("Passed\n\n");
+  MALLOC_CALLS = -1;
+  return 1;
+}
+
+int test_add_edge_realloc_fails_cols() {
+  printf("test_add_edge_malloc_fails_matrix():\n");
+  MALLOC_CALLS = 4;
+  Graph* g = initGraph(1);
+  assert(addEdge(g, 1, 1) == NULL);
+  printf("Passed\n\n");
+  MALLOC_CALLS = -1;
+  return 1;
+}
+
+int test_add_edge_malloc_fails_rows() {
+  printf("test_add_edge_malloc_fails_matrix():\n");
+  MALLOC_CALLS = 5;
+  Graph* g = initGraph(1);
+  assert(addEdge(g, 1, 1) == NULL);
+  printf("Passed\n\n");
+  MALLOC_CALLS = -1;
+  return 1;
+}
+
 int main() {
   MALLOC_CALLS = -1;
-  int total_tests = 7;
+  int total_tests = 11;
   int passed_tests = 0;
   passed_tests += test_add_edges();
   passed_tests += test_add_edges_extend_range();
@@ -107,5 +147,9 @@ int main() {
   passed_tests += test_init_malloc_fails_matrix();
   passed_tests += test_init_malloc_fails_row_0();
   passed_tests += test_init_malloc_fails_row_5();
+  passed_tests += test_add_edge_malloc_fails_matrix();
+  passed_tests += test_add_edge_realloc_fails_matrix();
+  passed_tests += test_add_edge_realloc_fails_cols();
+  passed_tests += test_add_edge_malloc_fails_rows();
   printf("Number of passed tests: %d/%d\n", passed_tests, total_tests);
 }
