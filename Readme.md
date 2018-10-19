@@ -9,9 +9,11 @@ fails.
 
 ## Tests
 
-To test that all memory will be free'd, a special mock for malloc and realloc has been
-created. To run the tests use `make test`, the usage of `valgrind` is recommended
-to ensure that there are no memory leakes.
+To test that all memory will be free'd, a special mock for malloc and realloc
+has been created. They can be found in `test.c`.
+To create the binaries for the tests use `make test`.
+The usage of `valgrind` is recommended, to ensure that there are no memory
+leakes.
 
 ## Helpers
 
