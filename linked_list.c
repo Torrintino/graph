@@ -54,6 +54,8 @@ LinkedList* ll_remove(LinkedList* l, unsigned long id) {
       free(current);
       return l;
     }
+    prev = current;
+    current = current->next;
   }
   return l;
 }
