@@ -8,6 +8,7 @@ LDFLAGS = -Wl,--wrap,malloc,--wrap,realloc
 test: $(TEST_FILES) $(SOURCE)
 	gcc $(CFLAGS) $(LDFLAGS) -o test_adjacency_matrix test_adjacency_matrix.c adjacency_matrix.c helpers.c test.c
 	gcc $(CFLAGS) $(LDFLAGS) -o test_linked_list test_linked_list.c linked_list.c test.c helpers.c
+	gcc $(CFLAGS) $(LDFLAGS) -o test_adjacency_list test_adjacency_list.c adjacency_list.c test.c linked_list.c
 
 clean:
-	rm test_adjacency_matrix test_linked_list
+	rm test_adjacency_matrix test_linked_list test_adjacency_list

@@ -20,8 +20,10 @@ LinkedList* ll_add(LinkedList* l, unsigned long id) {
   }
   
   while(entry->next != NULL) {
+    #ifndef LINKED_LIST_UNIQUE
     if(entry->id == id)
-      return entry;
+      return l;
+    #endif
     entry = entry->next;
   }
   if(entry->id == id) return l;

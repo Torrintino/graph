@@ -4,6 +4,8 @@
 #include <assert.h>
 #include <stdio.h>
 
+#define LINKED_LIST_UNIQUE
+
 int test_add_and_search() {
   printf("test_add_and_search:\n");
 
@@ -129,6 +131,7 @@ int test_add_malloc_fails_head() {
     return 0;
 
   printf("Passed\n\n");
+  MALLOC_CALLS = -1;
   return 1;
 }
 
@@ -147,6 +150,7 @@ int test_add_malloc_fails_tail() {
     return 0;
 
   printf("Passed\n\n");
+  MALLOC_CALLS = -1;
   return 1;
 }
 

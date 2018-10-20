@@ -1,6 +1,11 @@
 #ifndef LINKED_LIST_H
 #define LINKED_LIST_H
 
+/*** Per default a linked list can contain two elements with the same ID.
+     You can define LINKED_LIST_UNIQUE to ensure, that only elements will
+     be added, that are not in the list already.
+ ***/
+
 typedef struct LinkedList {
   unsigned long id;
   struct LinkedList* next;
