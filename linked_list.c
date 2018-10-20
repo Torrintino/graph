@@ -12,7 +12,7 @@ LinkedList* ll_add(LinkedList* l, unsigned long id) {
   LinkedList* entry = l;
 
   if(entry == NULL) {
-    entry = malloc(sizeof(LinkedList*));
+    entry = malloc(sizeof(LinkedList));
     if(entry == NULL) return NULL;
     entry->next = NULL;
     entry->id = id;
@@ -26,7 +26,7 @@ LinkedList* ll_add(LinkedList* l, unsigned long id) {
   }
   if(entry->id == id) return l;
   
-  entry->next = malloc(sizeof(LinkedList*));
+  entry->next = malloc(sizeof(LinkedList));
   if(entry->next == NULL) {
     ll_destroy(l);
     return NULL;
