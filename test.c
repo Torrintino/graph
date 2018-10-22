@@ -22,3 +22,22 @@ void* __wrap_realloc(size_t size) {
     MALLOC_CALLS--;
   return __real_realloc(size);
 }
+
+void test_init() {
+  turn_malloc_on();
+  tests_run = 0;
+  tests_passed = 0;
+}
+
+void turn_malloc_on() {
+  MALLOC_CALLS = -1;
+}
+
+void turn_malloc_off(unsigned int n) {
+  MALLOC_CALLS = n;
+}
+
+int test_finish() {
+  printf("Passed tests: %d/%d\n", tests_passed, tests_run);
+  return tests_passed == tests_run;
+}
