@@ -1,4 +1,4 @@
-#include "adjacency_list.h"
+#include "../adjacency_list.h"
 #include "test.h"
 
 #include <stdio.h>
