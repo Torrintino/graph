@@ -4,92 +4,54 @@
 #include <stdio.h>
 
 int test_add_edge() {
-  printf("test_add_edge():\n");
   Graph* g = init_graph(5);
-  g = add_edge(g, 0, 0);
-  if(!is_edge(g, 0, 0))
-    return 0;
-  
-  g = add_edge(g, 4, 2);
-  if(!is_edge(g, 4, 2))
-    return 0;
-  
-  g = add_edge(g, 1, 3);
-  if(!is_edge(g, 1,3))
-    return 0;
-  
-  g = add_edge(g, 2, 3);
-  if(!is_edge(g, 2, 3))
-    return 0;
-  
-  g = add_edge(g, 1, 4);
-  if(!is_edge(g, 1, 4))
-    return 0;
-  
-  g = add_edge(g, 1, 1);
-  if(!is_edge(g, 1, 1))
-    return 0;
-  
+  for(int i=0;i<50;i++) {
+    g = add_edge(g, i, i%16);
+    _assert(is_edge(g, i, i%16));
+  }
   destroy_graph(g);
-  printf("Passed\n\n");
   return 1;
 }
 
 int test_add_edge_extend_size() {
-  printf("test_add_edge_extend_size():\n");
   Graph* g = init_graph(5);
   g = add_edge(g, 5, 5);
-  if(!is_edge(g, 5, 5))
-    return 0;
-  
+  _assert(is_edge(g, 5, 5));
   g = add_edge(g, 5, 6);
-  if(!is_edge(g, 5, 6))
-    return 0;
-  
+  _assert(is_edge(g, 5, 6));
   g = add_edge(g, 7, 6);
-  if(!is_edge(g, 7, 6))
-    return 0;
-  
+  _assert(is_edge(g, 7, 6));
   destroy_graph(g);
-  printf("Passed\n\n");
   return 1;
 }
 
 int test_remove_edge() {
-  printf("test_remove_edge():\n");
   Graph* g = init_graph(5);
   g = add_edge(g, 1, 1);
   g = add_edge(g, 2, 2);
   g = add_edge(g, 3, 3);
   g = remove_edge(g, 2, 2); 
-  if(is_edge(g, 2, 2))
-    return 0;
+  _assert(!is_edge(g, 2, 2));
   
   destroy_graph(g);
-  printf("Passed\n\n");
   return 1;
 }
 
 
 int test_remove_all_and_search() {
-  printf("test_remove_all_and_search():\n");
   Graph* g = init_graph(5);
   g = add_edge(g, 1, 1);
   g = add_edge(g, 2, 2);
   g = remove_edge(g, 2, 2);
   g = remove_edge(g, 1, 1);
-  if(is_edge(g, 2, 2))
-    return 0;
-  if(is_edge(g, 1, 1))
-    return 0;
+  _assert(!is_edge(g, 2, 2));
+  _assert(!is_edge(g, 1, 1));
   
   destroy_graph(g);
-  printf("Passed\n\n");
   return 1;
 }
 
 int test_print_graph() {
-  printf("test_print_graph():\n");
   Graph* g = init_graph(5);
   g = add_edge(g, 1, 1);
   g = add_edge(g, 2, 3);
@@ -102,59 +64,50 @@ int test_print_graph() {
   printf("\n");
 
   destroy_graph(g);
-  printf("Passed\n\n");
   return 1;
 }
 
 int test_init_graph_malloc_fails_graph() {
-  printf("test_print_graph():\n");
-  MALLOC_CALLS = 0;
+  turn_malloc_off(0);
   Graph* g = init_graph(5);
-  if(g != NULL)
-    return 0;
+  _assert(g == NULL);
 
-  printf("Passed\n\n");
-  MALLOC_CALLS = -1;
   return 1;
 }
 
 
 int test_init_graph_malloc_fails_nodes() {
-  printf("test_print_graph():\n");
-  MALLOC_CALLS = 1;
-  Graph* g = init_graph(5);
-  if(g != NULL)
-    return 0;
+  turn_malloc_off(1);
 
-  printf("Passed\n\n");
-  MALLOC_CALLS = -1;
+  Graph* g = init_graph(5);
+  _assert(g == NULL);
   return 1;
 }
 
 int test_init_graph_realloc_fails_edge() {
-  printf("test_print_graph():\n");
-  MALLOC_CALLS = 2;
+  turn_malloc_off(2);
   Graph* g = init_graph(1);
   g = add_edge(g, 2, 2);
-  if(g != NULL)
-    return 0;
+  _assert(g == NULL);
 
-  printf("Passed\n\n");
-  MALLOC_CALLS = -1;
   return 1;
 }
 
 int main() {
-  MALLOC_CALLS = -1;
-  int passed_tests = 0, total_tests = 8;
-  passed_tests += test_add_edge();
-  passed_tests += test_add_edge_extend_size();
-  passed_tests += test_remove_edge();
-  passed_tests += test_remove_all_and_search();
-  passed_tests += test_print_graph();
-  passed_tests += test_init_graph_malloc_fails_graph();
-  passed_tests += test_init_graph_malloc_fails_nodes();
-  passed_tests += test_init_graph_realloc_fails_edge();
+  test_init();
+  
+  _verify(test_add_edge);
+  _verify(test_add_edge_extend_size);
+  _verify(test_remove_edge);
+  _verify(test_remove_all_and_search);
+  _verify(test_print_graph);
+  _verify(test_init_graph_malloc_fails_graph);
+  _verify(test_init_graph_malloc_fails_nodes);
+  _verify(test_init_graph_realloc_fails_edge);
 
-  printf("Passed tests: %d/%d\n\n", passed_tests, total_tests);
+  
+  if(!test_finish()) {
+    return 1;
+  }
+  return 0;
 }
