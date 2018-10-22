@@ -72,6 +72,7 @@ int test_remove_tail_and_search() {
   l = ll_add(l, 5);
   _assert(!ll_search(l, 4));
   _assert(ll_search(l, 5));
+  ll_destroy(l);
   
   return 1;
 }
