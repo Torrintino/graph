@@ -8,6 +8,7 @@ typedef struct Graph {
 
 Graph* initGraph(unsigned int size);
 Graph* addEdge(Graph* g, int src, int dest);
+Graph* addEdgeValue(Graph* g, int src, int dest, int v);
 Graph* removeEdge(Graph* g, int src, int dest);
 int isEdge(Graph* g, int src, int dest);
 void printGraph(Graph* g);

@@ -6,5 +6,6 @@
 
 char* read_line();
 int get_ul(int n, ...);
+int get_ul_array(int n, unsigned long* array);
 
 #endif

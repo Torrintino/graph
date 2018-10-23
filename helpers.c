@@ -35,7 +35,36 @@ char* read_line() {
   }
 }
 
+/*** Helper function for get_ul and get_ul_array
+     Get the next token from given line and parse it to unsigned long
+     With the first call a pointer to the line must be given, with all subsequent
+     calls for the same line, NULL must be passed.
+
+     Returns FALSE if any input errors occured
+ ***/
+int get_ul_token(char* line, unsigned long* input) {
+  char* token = strtok(line, " \t");
+  if(token == NULL) {
+    fprintf(stderr, "get_ul_token: Invalid format\n");
+    return FALSE;
+  }
+
+  errno = 0;
+  char* endptr;
+  *input = strtoul(token, &endptr, 10);
+  if(errno != 0 ||
+     endptr == line ||
+     *endptr != '\0') {
+    fprintf(stderr, "get_ul_token: Invalid value\n");
+    return FALSE;
+  }
+  return TRUE;
+}
+
 /*** get "n" unsigned long values from input, which are delimted by " \t"
+     n pointers need to be passed as arguments, 
+     which will be set to the values from input.
+
      RETURNS TRUE for success and FALSE for failure
 ***/
 int get_ul(int n, ...) {
@@ -50,31 +79,42 @@ int get_ul(int n, ...) {
   
   for(int i=0; i<n; i++) {
     unsigned long* input = va_arg(args, unsigned long*);
-    char* token = (i==0) ? strtok(line, " \t") : strtok(NULL, " \t");
-    if(token == NULL) {
-      fprintf(stderr, "get_ul: Invalid format\n");
-      return FALSE;
-    }
-    
-    if(i == n-1) {
-      if(strtok(NULL, " \t") != NULL) {
-	fprintf(stderr, "get_ul: Invalid format\n");
-	return FALSE;
-      }
-    }
+    if(!get_ul_token((i == 0) ? line : NULL, input))
+      return FALSE;  
+  }
 
-    errno = 0;
-    char* endptr;
-    *input = strtoul(token, &endptr, 10);
-    if(errno != 0 ||
-       endptr == line ||
-       *endptr != '\0') {
-      fprintf(stderr, "get_ul: Invalid value\n");
-      return FALSE;
-    }
+  if(strtok(NULL, " \t") != NULL) {
+    fprintf(stderr, "get_ul: Invalid format\n");
+    return FALSE;
   }
 
   free(line);
   va_end(args);
+  return TRUE;
+}
+
+/*** Gets n values from a line from stdin.
+     The space for array needs to be allocated by the user.
+
+     RETURNS TRUE for success and FALSE for failure
+ ***/
+int get_ul_array(int n, unsigned long* array) {
+  char* line = read_line();
+  if(line == NULL) {
+    fprintf(stderr, "get_ul_array: Allocation error\n");
+    return FALSE;
+  }
+  
+  for(int i=0; i<n; i++) {
+    if(!get_ul_token((i == 0) ? line : NULL, &array[i]))
+      return FALSE;
+  }
+
+  if(strtok(NULL, " \t") != NULL) {
+    fprintf(stderr, "get_ul_array: Invalid format\n");
+    return FALSE;
+  }
+
+  free(line);
   return TRUE;
 }

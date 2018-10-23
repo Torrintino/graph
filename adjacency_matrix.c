@@ -37,7 +37,7 @@ Graph* initGraph(unsigned int size) {
   return g;
 }
 
-Graph* addEdge(Graph* g, int src, int dest) {
+Graph* addEdgeValue(Graph* g, int src, int dest, int v) {
   if(src >= g->size || dest >= g->size) {
     int old_size = g->size;
     g->size = src > dest ? (src + 1) : (dest + 1);
@@ -93,8 +93,12 @@ Graph* addEdge(Graph* g, int src, int dest) {
     }
   }
 
-  g->matrix[src][dest] = 1;
+  g->matrix[src][dest] = v;
   return g;
+}
+
+Graph* addEdge(Graph* g, int src, int dest) {
+  return addEdgeValue(g, src, dest, 1);
 }
 
 Graph* removeEdge(Graph* g, int src, int dest) {
@@ -104,7 +108,7 @@ Graph* removeEdge(Graph* g, int src, int dest) {
 }
 
 int isEdge(Graph* g, int src, int dest) {
-  return g->matrix[src][dest] == 1;
+  return g->matrix[src][dest];
 }
 
 void printGraph(Graph* g) {
