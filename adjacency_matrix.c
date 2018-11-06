@@ -114,7 +114,9 @@ int isEdge(Graph* g, int src, int dest) {
 void printGraph(Graph* g) {
   for(int i=0; i<g->size; i++) {
     for(int j=0; j<g->size; j++) {
-      printf("%d ", g->matrix[i][j]);
+      if(j != 0)
+	printf(" ");
+      printf("%d", g->matrix[i][j]);
     }
     printf("\n");
   }
