@@ -1,5 +1,5 @@
 #include "../adjacency_list.h"
-#include "test.h"
+#include "framework/test.h"
 
 #include <stdio.h>
 
