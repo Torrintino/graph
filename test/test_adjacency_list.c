@@ -56,12 +56,7 @@ int test_print_graph() {
   g = add_edge(g, 1, 1);
   g = add_edge(g, 2, 3);
   g = add_edge(g, 3, 4);
-  printf("Expected output:\n");
-  printf("0\n1-> 1\n2-> 3\n3-> 4\n4\n\n");
-
-  printf("Actual output:\n");
   print_graph(g);
-  printf("\n");
 
   destroy_graph(g);
   return 1;

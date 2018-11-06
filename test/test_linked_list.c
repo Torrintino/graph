@@ -81,11 +81,7 @@ int test_print() {
   LinkedList* l = ll_init();
   for(int i=0; i<5; i++)
     l = ll_add(l, i);
-  printf("Expected output:\n");
-  printf("0-> 1-> 2-> 3-> 4\n\n");
-  printf("Actual ouput:\n");
   ll_print(l);
-  printf("\n");
   ll_destroy(l);
   
   return 1;
@@ -115,7 +111,6 @@ int test_add_malloc_fails_tail() {
 }
 
 int main() {
-  printf("test_linked_lists:\n");
   test_init();
 
   _verify(test_add_and_search);

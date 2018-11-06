@@ -44,10 +44,6 @@ int test_print() {
   addEdge(g, 0, 0);
   addEdge(g, 2, 1);
   addEdge(g, 1, 2);
-  printf("Expected output:\n");
-  printf("1 0 0\n0 0 1\n0 1 0\n\n");
-  
-  printf("Actual output:\n");
   printGraph(g);
   destroyGraph(g);
   return 1;
