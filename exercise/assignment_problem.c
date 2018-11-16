@@ -1,6 +1,8 @@
 #include "../adjacency_matrix.h"
 #include "../helpers.h"
+#include "../hungarian.h"
 
+#include <stdio.h>
 #include <stdlib.h>
 
 int main() {
@@ -18,8 +20,11 @@ int main() {
     g = initGraph(graph_size);
 
     input = malloc((graph_size * graph_size) * sizeof(unsigned long));
-    if(!get_ul_array((graph_size * graph_size), input))
+    if(!get_ul_array((graph_size * graph_size), input)) {
+      destroyGraph(g);
+      free(input);
       return 1;
+    }
     for(agent = 0; agent < graph_size; agent++) {
       for(task = 0; task < graph_size; task++) {
 	index = (agent * graph_size) + task;
@@ -29,6 +34,14 @@ int main() {
 
     free(input);
     printGraph(g);
+    int* result = hungarian(g, MAX);
+    if(result == NULL) {
+      destroyGraph(g);
+      return 1;
+    }
+    print_assignment(result, g->size);
+    printf("Result: %d\n\n", compute_sum(g, result));
+    free(result);
     destroyGraph(g);
   }
   

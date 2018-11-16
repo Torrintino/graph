@@ -17,4 +17,5 @@ Here is the link to the challenge:
 https://practice.geeksforgeeks.org/problems/assignment-problem/0
 
 I am working on this topic in a semester on graph algorithms.
-The problem was solved by using the Hungarian algorithm.
+The problem was solved by using the Hungarian algorithm, as it was revised
+by Munkres in 1957.

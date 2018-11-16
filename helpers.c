@@ -79,12 +79,15 @@ int get_ul(int n, ...) {
   
   for(int i=0; i<n; i++) {
     unsigned long* input = va_arg(args, unsigned long*);
-    if(!get_ul_token((i == 0) ? line : NULL, input))
-      return FALSE;  
+    if(!get_ul_token((i == 0) ? line : NULL, input)) {
+      free(line);
+      return FALSE;
+    }
   }
 
   if(strtok(NULL, " \t") != NULL) {
     fprintf(stderr, "get_ul: Invalid format\n");
+    free(line);
     return FALSE;
   }
 
@@ -106,12 +109,15 @@ int get_ul_array(int n, unsigned long* array) {
   }
   
   for(int i=0; i<n; i++) {
-    if(!get_ul_token((i == 0) ? line : NULL, &array[i]))
+    if(!get_ul_token((i == 0) ? line : NULL, &array[i])) {
+      free(line);
       return FALSE;
+    }
   }
 
   if(strtok(NULL, " \t") != NULL) {
     fprintf(stderr, "get_ul_array: Invalid format\n");
+    free(line);
     return FALSE;
   }
 

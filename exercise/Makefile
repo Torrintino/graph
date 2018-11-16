@@ -2,7 +2,7 @@
 
 all: assignment_problem print_adjacent_list
 
-assignment_problem: assignment_problem.c ../helpers.c ../adjacency_matrix.c
+assignment_problem: assignment_problem.c ../helpers.c ../adjacency_matrix.c ../hungarian.c
 	gcc -o $@ -Wall -Werror -pedantic -std=c99 -g $^
 
 print_adjacent_list: print_adjacent_list.c ../helpers.c ../adjacency_list.c ../linked_list.c

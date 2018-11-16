@@ -37,6 +37,36 @@ Graph* initGraph(unsigned int size) {
   return g;
 }
 
+Graph* copyGraph(Graph* g) {
+  Graph* c = malloc(sizeof(Graph));
+  if(c == NULL)
+    return NULL;
+
+  c->size = g->size;
+  c->matrix = malloc(sizeof(int*) * c->size);
+  if(c->matrix == NULL) {
+    free(c);
+    return NULL;
+  }
+
+  for(int i=0; i<c->size; i++) {
+    c->matrix[i] = malloc(sizeof(int) * c->size);
+    if(c->matrix[i] == NULL) {
+      i -= 1;
+      for(; i >= 0; i--)
+	free(c->matrix[i]);
+      free(c->matrix);
+      free(c);
+      return NULL;
+    }
+    
+    for(int j=0; j<c->size; j++)
+      c->matrix[i][j] = g->matrix[i][j];
+  }
+  
+  return c;
+}
+
 Graph* addEdgeValue(Graph* g, int src, int dest, int v) {
   if(src >= g->size || dest >= g->size) {
     int old_size = g->size;
