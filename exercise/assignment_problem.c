@@ -33,14 +33,12 @@ int main() {
     }
 
     free(input);
-    printGraph(g);
-    int* result = hungarian(g, MAX);
+    int* result = hungarian(g, MIN);
     if(result == NULL) {
       destroyGraph(g);
       return 1;
     }
-    print_assignment(result, g->size);
-    printf("Result: %d\n\n", compute_sum(g, result));
+    printf("%d\n", compute_sum(g, result));
     free(result);
     destroyGraph(g);
   }
